@@ -1,0 +1,27 @@
+<mat-drawer-container class="container" [ngClass]="{'container-bottom': isExpanded}">
+  <mat-drawer #drawer mode="side" (click)="drawer.toggle(); isExpanded = !isExpanded;">
+    <div style="text-align: center;">
+      <h1 class="title" [routerLink]="['/home']">
+        Beteg<br>kezelő
+      </h1>
+      <div>
+        <button mat-button [routerLink]="['/manage-patient']">Beteg felvétel</button>
+      </div>
+      <div>
+        <button mat-button [routerLink]="['/list-patient', {action: Action.Modification}]">Beteg módosítás</button>
+      </div>
+      <div>
+        <button mat-button [routerLink]="['/list-patient', {action: Action.Delete}]">Beteg törlés</button>
+      </div>
+      <div>
+        <button mat-button [routerLink]="['/registration']">Felh. regisztrálás</button>
+      </div>
+      <div>
+        <button mat-button (click)="signOut()">Kijelentkezés</button>
+      </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <button style="background-color: lightblue" mat-button (click)="drawer.toggle(); isExpanded = !isExpanded;"><mat-icon>menu</mat-icon></button>
+  </mat-drawer-content>
+</mat-drawer-container>

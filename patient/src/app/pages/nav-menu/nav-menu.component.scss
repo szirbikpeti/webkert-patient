@@ -1,0 +1,31 @@
+.title {
+  cursor: pointer;
+  font-family:MV Boli;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  outline: none;
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.container-bottom {
+  bottom: 60%;
+}
+
+mat-drawer {
+  width: 115%;
+}
+
+@media only screen and (max-width: 400px) {
+  .login-text {
+    display: none;
+  }
+
+  .login-icon {
+    display: inline-block;
+  }
+}

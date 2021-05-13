@@ -1,0 +1,34 @@
+<div style="text-align: center; margin-top: 50px; margin-bottom: -40px;">
+  <h3>Szűrés</h3>
+</div>
+<div class="flex-container">
+  <button class="filtering" mat-raised-button (click)="get('getOrderByBirthDateAsc')">Születési idő (növekvő)</button>
+  <button class="filtering" mat-raised-button (click)="get('getOrderByBirthDateDesc')">Születési idő (csökkenő)</button>
+  <button class="filtering" mat-raised-button (click)="get('getActive')">Aktív betegek</button>
+  <button class="filtering" mat-raised-button (click)="get('get')">Nincs szűrés</button>
+</div>
+<div class="flex-container">
+  <mat-card class="flex-item" (click)="openEditModal(patient)" *ngFor="let patient of patients | async; index as index" onHover>
+    <button *ngIf="action == Action.Delete" mat-icon-button type="button" class="icon">
+      <mat-icon (click)="openDialog(patient.id)">delete_forever</mat-icon>
+    </button>
+    <div>
+      Családi név:
+      <div *ngFor="let name of patient?.name">
+        <li *ngIf="name.family" style="margin-left:15px;">{{name.family}}</li>
+      </div>
+    </div>
+    <div>
+      Nem: {{patient?.gender | default:'Nincs megadva'}}
+    </div>
+    <div>
+      Születési idő: {{patient?.birthDate | date: 'yyyy.MM.dd.'  | default:'Nincs megadva'}}
+    </div>
+    <div>
+      Lakcím: 
+      <div *ngFor="let address of patient?.address">
+        <li style="margin-left:15px;">{{address?.postalCode}} {{address?.city}} ({{address?.type}}) ({{address?.country}})</li>
+      </div>
+    </div>
+  </mat-card>
+</div>

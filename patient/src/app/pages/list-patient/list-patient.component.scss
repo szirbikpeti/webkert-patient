@@ -1,0 +1,23 @@
+.flex-container {
+  margin-top: 50px;
+  margin-left: 50px;
+  display: flex;
+  flex-wrap: wrap;
+}
+  
+.flex-item {
+  width: 200px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.icon {
+	position: absolute; 
+	right: 0; 
+	margin-right: 15px;
+}
+
+.filtering {
+  width: 215px;
+  margin: 5px 15px;
+}

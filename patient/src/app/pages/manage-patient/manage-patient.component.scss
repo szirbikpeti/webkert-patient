@@ -1,0 +1,51 @@
+.container {
+	text-align: center;
+	margin-top: 50px;
+	padding-bottom: 50px;
+}
+
+mat-card {
+	width: 45%;
+	margin: 0 auto;
+	background-color: honeydew;
+}
+
+mat-form-field {
+	width: 65%;
+}
+
+.modal-dialog {
+	width: 80%;
+}
+
+.border {
+	border: 1px solid black;
+	margin: 5px 0 5px 0;
+}
+
+.coding {
+	border: 1px solid black;
+	margin: 5px 0 5px 0;
+}
+
+.left {
+  float: left;
+}
+
+.close {
+	position: absolute; 
+	right: 0; 
+	margin-right: 15px;
+}
+
+.label {
+	text-align: left;
+	margin-top: 10px;
+}
+
+
+@media only screen and (max-width: 750px) {
+	mat-card {
+	  width: 80%;
+	}
+}

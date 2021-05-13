@@ -1,0 +1,245 @@
+<div class="container">
+  <mat-card [ngClass]="{'modal-dialog': isModal}">
+    <h1>Beteg
+      <span *ngIf="!isModal">felvétel</span>
+      <span *ngIf="isModal">módosítás</span>
+    </h1>
+    <form [formGroup]="managePatientForm" (ngSubmit)="submitManagePatientForm()">
+      <div>
+        <div class="label">
+          <label>Azonosító</label>
+          <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('identifier')">add</mat-icon></button>
+        </div>
+        <div *ngIf="isShowFormInPatient('identifier')">
+          <form [formGroup]="identifier" *ngFor="let identifier of identifier.controls; index as index">
+            <div class="border">
+              <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('identifier', index)">close</mat-icon></button>
+              <mat-form-field><input matInput formControlName="use" placeholder="Használat"/></mat-form-field>
+              <mat-form-field><input matInput formControlName="system" placeholder="Rendszer"/></mat-form-field>
+              <mat-form-field><input matInput formControlName="value" placeholder="Érték"/></mat-form-field>
+              <div>
+                <button mat-button (click)="changeFormExistsOfFormArray('identifier', 'period', index)">
+                  Periódus
+                  <mat-icon *ngIf="!isShowFormOfFormArray('identifier', 'period', index)">add</mat-icon>
+                  <mat-icon *ngIf="isShowFormOfFormArray('identifier', 'period', index)">close</mat-icon>
+                </button>
+                <div *ngIf="isShowFormOfFormArray('identifier', 'period', index)">
+                  <form formGroupName="period">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="startPicker" formControlName="start" placeholder="Kezdet">
+                      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="endPicker" formControlName="end" placeholder="Vég">
+                      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div>
+          <div class="label">
+            <label>Név</label>
+            <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('name')">add</mat-icon></button>
+          </div>
+          <div *ngIf="isShowFormInPatient('name')">
+            <form [formGroup]="name" *ngFor="let name of name.controls; index as index">
+              <div class="border">
+                <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('name', index)">close</mat-icon></button>
+                <mat-form-field><input matInput formControlName="text" placeholder="Szöveg"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="family" placeholder="Család"/></mat-form-field>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div>
+          <div class="label">
+            <label>Telecom</label>
+            <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('telecom')">add</mat-icon></button>
+          </div>
+          <div *ngIf="isShowFormInPatient('telecom')">
+            <form [formGroup]="telecom" *ngFor="let telecom of telecom.controls; index as index">
+              <div class="border">
+                <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('telecom', index)">close</mat-icon></button>
+                <mat-form-field>
+                  <mat-select formControlName="system" placeholder="Válassz rendszert">
+                    <mat-option value='Telefon'>Telefon</mat-option>
+                    <mat-option value='Fax'>Fax</mat-option>
+                    <mat-option value='Email'>Email</mat-option>
+                    <mat-option value='Pager'>Pager</mat-option>
+                    <mat-option value='Url'>Url</mat-option>
+                    <mat-option value='Sms'>Sms</mat-option>
+                    <mat-option value='Más'>Más</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field><input matInput formControlName="value" placeholder="Érték"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="use" placeholder="Használat"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="rank" placeholder="Rank" type="number"/></mat-form-field>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="label">
+          <mat-form-field appearance="standard">
+            <mat-select formControlName="gender" placeholder='Válassz nemet'>
+              <mat-option value='Férfi'>Férfi</mat-option>
+              <mat-option value='Nő'>Nő</mat-option>
+              <mat-option value='Mindkettő'>Mindkettő</mat-option>
+              <mat-option value='Ismeretlen'>Ismeretlen</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="label">
+          <mat-form-field>
+            <input matInput [matDatepicker]="birthDateValue" formControlName="birthDate" placeholder="Születés ideje">
+            <mat-datepicker-toggle matSuffix [for]="birthDateValue"></mat-datepicker-toggle>
+            <mat-datepicker #birthDateValue></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <div class="label">
+            <label>Lakcím</label>
+            <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('address')">add</mat-icon></button>
+          </div>
+          <div *ngIf="isShowFormInPatient('address')">
+            <form [formGroup]="address" *ngFor="let address of address.controls; index as index">
+              <div class="border">
+                <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('address', index)">close</mat-icon></button>
+                <mat-form-field appearance="standard">
+                  <mat-select formControlName="type" placeholder='Válassz típust'>
+                    <mat-option value='Postai'>Postai</mat-option>
+                    <mat-option value='Fizikai'>Fizikai</mat-option>
+                    <mat-option value='Mindkettő'>Mindkettő</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field><input matInput formControlName="text" placeholder="Szöveg"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="city" placeholder="Város"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="state" placeholder="Állam/Megye"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="postalCode" placeholder="Irányítószám"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="country" placeholder="Ország"/></mat-form-field>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div>
+          <div class="label">
+            <label>Photo</label>
+            <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('photo')">add</mat-icon></button>
+          </div>
+          <div *ngIf="isShowFormInPatient('photo')">
+            <form [formGroup]="photo" *ngFor="let photo of photo.controls; index as index">
+              <div class="border">
+                <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('photo', index)">close</mat-icon></button>
+                <mat-form-field><input matInput formControlName="language" placeholder="Nyelv"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="data" placeholder="Adat"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="url" placeholder="Url"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="size" placeholder="Méret" type="number"/></mat-form-field>
+                <mat-form-field><input matInput formControlName="title" placeholder="Cím"/></mat-form-field>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div>
+          <div class="label">
+            <label>Kapcsolat</label>
+            <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('contact')">add</mat-icon></button>
+          </div>
+          <div *ngIf="isShowFormInPatient('contact')">
+            <form [formGroup]="contact" *ngFor="let contact of contact.controls; index as index">
+              <div class="border">
+                <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('contact', index)">close</mat-icon></button>
+                <mat-form-field appearance="standard">
+                  <mat-select formControlName="gender" placeholder='Válassz nemet'>
+                    <mat-option value='Férfi'>Férfi</mat-option>
+                    <mat-option value='Nő'>Nő</mat-option>
+                    <mat-option value='Mindkettő'>Mindkettő</mat-option>
+                    <mat-option value='Ismeretlen'>Ismeretlen</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div>
+                  <button mat-button (click)="changeFormExistsOfFormArray('contact', 'name', index)">
+                    Név
+                    <mat-icon *ngIf="!isShowFormOfFormArray('contact', 'name', index)">add</mat-icon>
+                    <mat-icon *ngIf="isShowFormOfFormArray('contact', 'name', index)">close</mat-icon>
+                  </button>
+                  <div *ngIf="isShowFormOfFormArray('contact', 'name', index)">
+                    <form formGroupName="name">
+                      <mat-form-field><input matInput formControlName="text" placeholder="Szöveg" /></mat-form-field>
+                      <mat-form-field><input matInput formControlName="family" placeholder="Család" /></mat-form-field>
+                    </form>
+                  </div>
+                </div>
+                <div>
+                  <button mat-button (click)="changeFormExistsOfFormArray('contact', 'period', index)">
+                    Periódus
+                    <mat-icon *ngIf="!isShowFormOfFormArray('contact', 'period', index)">add</mat-icon>
+                    <mat-icon *ngIf="isShowFormOfFormArray('contact', 'period', index)">close</mat-icon>
+                  </button>
+                  <div *ngIf="isShowFormOfFormArray('contact', 'period', index)">
+                    <form formGroupName="period">
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="startPicker" formControlName="start" placeholder="Kezdet">
+                        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="endPicker" formControlName="end" placeholder="Vég">
+                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                      </mat-form-field>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div>
+          <div class="label">
+            <label>Link</label>
+            <button mat-icon-button type="button"><mat-icon (click)="addNewArrayFormToPatient('link')">add</mat-icon></button>
+          </div>
+          <div *ngIf="isShowFormInPatient('link')">
+            <form [formGroup]="link" *ngFor="let link of link.controls; index as index">
+              <div class="border">
+                <button mat-icon-button type="button" class="close"><mat-icon (click)="deleteArrayElement('link', index)">close</mat-icon></button>
+                <mat-form-field appearance="standard">
+                  <mat-select formControlName="type" placeholder='Válassz típust'>
+                    <mat-option value='replaced-by'>Replaced-by</mat-option>
+                    <mat-option value='replaces'>Replaces</mat-option>
+                    <mat-option value='refer'>Refer</mat-option>
+                    <mat-option value='seealso'>See also</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div>
+                  <div>Más</div>
+                  <div>
+                    <form formGroupName="other">
+                      <mat-form-field><input matInput formControlName="reference" placeholder="Referencia" /></mat-form-field>
+                      <mat-form-field><input matInput formControlName="type" placeholder="Típus" /></mat-form-field>
+                      <mat-form-field><input matInput formControlName="display" placeholder="Bemutatás" /></mat-form-field>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="label"><mat-checkbox color="primary" formControlName="deceasedBoolean">Elhunyt</mat-checkbox></div>
+        <div class="label"><mat-checkbox color="primary" formControlName="active">Aktív</mat-checkbox></div>
+        <div class="label"><mat-checkbox color="primary" formControlName="multipleBirth">Többszörös születés</mat-checkbox></div>
+      </div>
+      <div>
+        <button type="submit" mat-raised-button>
+          <span *ngIf="!isModal">Hozzáadás</span>
+          <span *ngIf="isModal">Módosítás</span>
+        </button>
+        <mat-error *ngIf="this.managePatientForm.invalid">Vannak kötelezően kitöltendő mezők!</mat-error>
+      </div>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,19 @@
+<mat-card>
+    <h2>Bejelentkezés</h2>
+    <form [formGroup]="loginUserForm" (ngSubmit)="submitLoginUserForm()">
+        <div>
+            <mat-form-field>
+                <input matInput formControlName="email" placeholder="Email-cím *">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <input matInput type="password" formControlName="password" placeholder="Jelszó *">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <button mat-raised-button type="submit">Bejelentkezés</button>
+        </div>
+    </form>
+</mat-card>

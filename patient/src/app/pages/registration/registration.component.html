@@ -1,0 +1,26 @@
+<mat-card>
+    <h2>Regisztráció</h2>
+    <form [formGroup]="addUserForm" (ngSubmit)="submitAddUserForm()">
+        <div>
+            <mat-form-field>
+                <input matInput formControlName="email" placeholder="Email-cím *">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <input matInput type="password" formControlName="password" placeholder="Jelszó *">
+                <mat-error>Min 6 hosszú</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <input matInput type="password" formControlName="confirmPassword" placeholder="Jelszó megerősítése *">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-error *ngIf=addUserForm.invalid>Érvénytelen beviteli mező(k)</mat-error>
+            <button [disabled]="addUserForm.invalid" mat-raised-button type="submit">Regisztráció</button>
+        </div>
+    </form>
+</mat-card>
