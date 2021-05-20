@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Contact } from '../../models/Contact';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/Patient';
-import { AfterViewInit, Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { createNewAddressForm, createNewContactForm, createNewIdentifierForm, createNewLinkForm, 
@@ -15,7 +15,7 @@ import { createNewAddressForm, createNewContactForm, createNewIdentifierForm, cr
   templateUrl: './manage-patient.component.html',
   styleUrls: ['./manage-patient.component.scss']
 })
-export class ManagePatientComponent implements OnInit, AfterViewInit {
+export class ManagePatientComponent implements OnInit {
   @Input() data: Patient;
   isModal: boolean = false;
 
@@ -47,9 +47,7 @@ export class ManagePatientComponent implements OnInit, AfterViewInit {
       deceasedBoolean: [false],
       multipleBirth: [false]
     });
-  }
-  
-  ngAfterViewInit(): void {
+
     if (this.data) {
       this.isModal = true;
       this.dialogRef = <MatDialogRef<ManagePatientComponent>>this.injector.get(MatDialogRef);
@@ -66,6 +64,7 @@ export class ManagePatientComponent implements OnInit, AfterViewInit {
       this.setFormGroupValuesInFormArrays();
     }
   }
+
   
 
   private setDate(patient: Patient, formName: string) {

@@ -5,7 +5,7 @@ import { Action } from './../../enums/Action';
 import { Observable, Subscription } from 'rxjs';
 import { Patient } from '../../models/Patient';
 import { PatientService } from '../../services/patient.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './list-patient.component.html',
   styleUrls: ['./list-patient.component.scss']
 })
-export class ListPatientComponent implements OnInit, OnDestroy {
+export class ListPatientComponent implements OnInit, OnDestroy, AfterViewInit {
   patients: Observable<Patient[]>;
   action: Action;
   
@@ -30,7 +30,9 @@ export class ListPatientComponent implements OnInit, OnDestroy {
     this.paramsSubscription = this.route.params.subscribe(params => {
       this.action = params['action'] as Action;
     });
-
+  }
+  
+  ngAfterViewInit(): void {
     this.patients = this._patient.get();
   }
 
