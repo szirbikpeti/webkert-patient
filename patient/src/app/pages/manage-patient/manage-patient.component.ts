@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Contact } from '../../models/Contact';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/Patient';
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Injector, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { createNewAddressForm, createNewContactForm, createNewIdentifierForm, createNewLinkForm, 
@@ -15,7 +15,7 @@ import { createNewAddressForm, createNewContactForm, createNewIdentifierForm, cr
   templateUrl: './manage-patient.component.html',
   styleUrls: ['./manage-patient.component.scss']
 })
-export class ManagePatientComponent implements OnInit {
+export class ManagePatientComponent implements OnInit, AfterViewInit {
   @Input() data: Patient;
   isModal: boolean = false;
 
@@ -37,7 +37,37 @@ export class ManagePatientComponent implements OnInit {
   constructor(private fb: FormBuilder, private _patient: PatientService, 
     private _toastr: ToastrService, private router: Router, private injector: Injector) {
   }
+
+  ngOnInit(): void {
+    this.managePatientForm = this.fb.group({
+      id: [''],
+      active: [false],
+      gender: [''],
+      birthDate: [''],
+      deceasedBoolean: [false],
+      multipleBirth: [false]
+    });
+  }
   
+  ngAfterViewInit(): void {
+    if (this.data) {
+      this.isModal = true;
+      this.dialogRef = <MatDialogRef<ManagePatientComponent>>this.injector.get(MatDialogRef);
+
+      for (let control in this.data) {
+        if (typeof(this.data[control]) === 'object') {
+          for (let i = 0; i < this.data[control].length; i++) {
+            this.addNewArrayFormToPatient(control);
+          }
+        }
+      }
+      
+      this.managePatientForm.patchValue(this.data);
+      this.setFormGroupValuesInFormArrays();
+    }
+  }
+  
+
   private setDate(patient: Patient, formName: string) {
     if (patient[formName]) {
       for (let form of patient[formName]) {
@@ -100,33 +130,6 @@ export class ManagePatientComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.managePatientForm = this.fb.group({
-      id: [''],
-      active: [false],
-      gender: [''],
-      birthDate: [''],
-      deceasedBoolean: [false],
-      multipleBirth: [false]
-    });
-
-    if (this.data) {
-      this.isModal = true;
-      this.dialogRef = <MatDialogRef<ManagePatientComponent>>this.injector.get(MatDialogRef);
-
-      for (let control in this.data) {
-        if (typeof(this.data[control]) === 'object') {
-          for (let i = 0; i < this.data[control].length; i++) {
-            this.addNewArrayFormToPatient(control);
-          }
-        }
-      }
-      
-      this.managePatientForm.patchValue(this.data);
-      this.setFormGroupValuesInFormArrays();
-    }
-  }
-
   addNewArrayFormToPatient(formName: string): void {
     this.isShowFormInPatient(formName)
       ? this[formName].push(this.create[formName]())
@@ -184,11 +187,6 @@ export class ManagePatientComponent implements OnInit {
           this.router.navigate(['/list-patient', {action: Action.Modification}]);
         })
         .catch(() => this._toastr.error('Sikertelen hozzáadás', 'Hiba'));
-    
-    // this._patient.get().subscribe(patient => console.log(patient));
-    // this.patients = this._patient.get(); // + async pipe html-be
-    // this._patient.getWithComplexQuery().subscribe(patient => console.log(patient));
-
   }
   
   get identifier(): FormArray {return this.managePatientForm.get('identifier') as FormArray;}

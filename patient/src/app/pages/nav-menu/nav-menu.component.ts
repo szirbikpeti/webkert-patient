@@ -16,7 +16,6 @@ export class NavMenuComponent {
   constructor(private router: Router, private _auth: AuthService) { }
 
   signOut(): void {
-    console.log(this._auth.isAuthenticated());
     this._auth.signOut().then(() => this.router.navigateByUrl('login'))
   }
 }
